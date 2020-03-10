@@ -4,6 +4,7 @@ import InputPresenter from './InputPresenter';
 interface IState {
   error: string;
   loading: boolean;
+  submitSuccess?: boolean;
 }
 
 class InputContainer extends Component<{}, IState> {
@@ -11,15 +12,35 @@ class InputContainer extends Component<{}, IState> {
     error: '',
     loading: true,
   };
-  onFormSubmit = (event: React.FormEvent) => {
+  handleSubmit = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
+
+    if(this.validateForm()) {
+      const submitSuccess: boolean = await this.submitForm();
+      this.setState({ submitSuccess });
+    }
+  };
+
+  validateForm(): boolean {
+    // TODO - validate form
+    return true;
+  }
+
+  async submitForm(): Promise<boolean> {
+    // TODO - submit the form
+    return true;
   }
 
   render() {
     const { error, loading } = this.state;
-    return <InputPresenter onFormSubmit={this.onFormSubmit} error={error} loading={loading} />;
+    return (
+      <InputPresenter
+        onSubmit={this.handleSubmit}
+        error={error}
+        loading={loading}
+      />
+    );
   }
-  
 }
 
 export default InputContainer;

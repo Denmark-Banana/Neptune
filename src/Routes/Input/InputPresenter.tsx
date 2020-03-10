@@ -28,23 +28,23 @@ const Input = styled.input`
 `;
 
 interface Iprops {
-  onFormSubmit: (event: React.FormEvent) => void;
+  onSubmit: (event: React.FormEvent) => void;
   error: string;
   loading: boolean;
 }
 
 const InputPresenter: React.FunctionComponent<Iprops> = ({
-  onFormSubmit,
+  onSubmit,
   error,
   loading,
 }) => (
   <Container>
     <Title>Input Memory</Title>
-    <Form onSubmit={onFormSubmit} method="post">
-      <Input placeholder="title" />
-      <Input placeholder="description" />
-      <Input placeholder="place" />
-      <Input placeholder="emotion" />
+    <Form name="frm" action="/memory" onSubmit={onSubmit} method="post">
+      <Input name="title" placeholder="title" />
+      <Input name="description" placeholder="description" />
+      <Input name="place" placeholder="place" />
+      <Input name="emotion" placeholder="emotion" />
       <Input type="submit" value="Submit" />
     </Form>
   </Container>
