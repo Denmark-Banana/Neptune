@@ -37,7 +37,7 @@ const HomePresenter: React.FunctionComponent<Iprops> = ({
             description={memory.description}
             place={memory.place}
             emotion={memory.emotion}
-          ></Card>
+          />
         ))}
       </Section>
     )}

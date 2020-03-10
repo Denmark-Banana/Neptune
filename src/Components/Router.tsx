@@ -15,7 +15,7 @@ export default () => (
   <Router>
     <>
       <Route path="/" exact component={Home} />
-      <Route path="/input" exact component={Input} />
+      <Route path="/memory" exact component={Input} />
       <Route path="/visual" exact component={Visual} />
       <Route path="/memory/:id" exact component={Memory} />
     </>

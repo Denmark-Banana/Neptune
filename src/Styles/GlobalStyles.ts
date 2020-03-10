@@ -16,6 +16,29 @@ const globalStyles = createGlobalStyle`
         color:#444444;
         font-size:14px;
     }
+    button,
+    input:not([type="file"]){
+        padding: 7px 10px;
+        width: 100%;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #444444;
+        font-weight: 600;
+        background-color: white;
+        resize: none;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        &::placeholder {
+            font-weight: 300;
+            color: rgba(0, 0, 0, 0.7);
+        }
+    }
+    button,
+    input[type="submit"] {
+        cursor: pointer;
+        background-color: #3498db;
+        color: white;
+    }
 `;
 
 export default globalStyles;

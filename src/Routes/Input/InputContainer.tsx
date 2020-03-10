@@ -11,10 +11,15 @@ class InputContainer extends Component<{}, IState> {
     error: '',
     loading: true,
   };
+  onFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+  }
+
   render() {
     const { error, loading } = this.state;
-    return <InputPresenter error={error} loading={loading} />;
+    return <InputPresenter onFormSubmit={this.onFormSubmit} error={error} loading={loading} />;
   }
+  
 }
 
 export default InputContainer;

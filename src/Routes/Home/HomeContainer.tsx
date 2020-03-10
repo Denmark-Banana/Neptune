@@ -5,19 +5,19 @@ import { memoryApi } from '../../api';
 interface IState {
   error: string;
   loading: boolean;
-  result: Array<{}>
+  result: Array<{}>;
 }
 
 class HomeContainer extends Component<{}, IState> {
   state = {
     error: '',
-    loading: true,
+    loading: false,
     result: [],
   };
 
   async componentDidMount() {
     try {
-      const { data: result } = await memoryApi.Memory();
+      const { data: result } = await memoryApi.getMemory();
       console.log(this.state.result);
       this.setState({ result });
     } catch (e) {

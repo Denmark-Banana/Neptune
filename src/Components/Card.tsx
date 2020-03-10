@@ -2,14 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    margin-bottom: 10px;
+  
 `;
 
 const Image = styled.div``;
 
-const ImageContainer = styled.div``;
+const ImageContainer = styled.div`
+  margin-bottom: 5px;
+  position: relative;
+`;
 
-const Title = styled.h3`
+const Title = styled.span`
+  display: block;
+  margin-bottom: 3px;
 `;
 
 const Description = styled.span``;

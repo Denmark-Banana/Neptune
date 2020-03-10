@@ -7,12 +7,16 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.p`
-    margin-bottom: 30px;
+const Title = styled.span`
+  font-size: 14px;
+  font-weight: 600;
 `;
 
 const Grid = styled.div`
-
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 125px);
+  grid-gap: 25px;
 `;
 
 interface IProps {
