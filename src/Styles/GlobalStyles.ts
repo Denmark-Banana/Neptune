@@ -17,8 +17,11 @@ const globalStyles = createGlobalStyle`
         font-size:14px;
     }
     button,
-    input:not([type="file"]){
+    select,
+    input:not([type="file"]),
+    textarea {
         padding: 7px 10px;
+        margin-bottom: 25px;
         width: 100%;
         border: none;
         border-radius: 5px;
@@ -26,6 +29,7 @@ const globalStyles = createGlobalStyle`
         color: #444444;
         font-weight: 600;
         background-color: white;
+        max-width: 320px;
         resize: none;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
         &::placeholder {
