@@ -19,12 +19,15 @@ const Grid = styled.div`
   grid-gap: 25px;
 `;
 
-interface IProps {
+interface ISectionProps {
+  /* The title for the section */
   title: string;
+
+  /* The children for the section */
   children: object;
 }
 
-const Section: React.FunctionComponent<IProps> = ({ title, children }) => (
+const Section: React.FunctionComponent<ISectionProps> = ({ title, children }) => (
   <Container>
     <Title>{title}</Title>
     <Grid>{children}</Grid>

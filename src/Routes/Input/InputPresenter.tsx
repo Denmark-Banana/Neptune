@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Field from '../../Components/Field';
+import { Form, IFields } from '../../Components/Form';
+import { Field } from '../../Components/Field';
 
 const Container = styled.div`
   padding: 20px;
@@ -14,43 +15,59 @@ const Title = styled.span`
   font-size: 14px;
   font-weight: 600;
 `;
-
-const Form = styled.form`
-  margin-top: 25px;
-  width: 100%;
-  max-width: 320px;
-  margin-bottom: 12px;
-`;
 interface Iprops {
-  onSubmit: (event: React.FormEvent) => void;
-  submitSuccess: boolean;
   error: string;
   loading: boolean;
 }
 
 const InputPresenter: React.FunctionComponent<Iprops> = ({
-  onSubmit,
   error,
   loading,
-  submitSuccess,
-}) => (
-  <Container>
-    <Title>Input Memory</Title>
-    <Form onSubmit={onSubmit} method="post">
-      <Field id="title" label="Title" />
-      <Field id="place" label="Place" />
-      <Field
-        id="emotion"
-        label="Emotion"
-        editor="dropdown"
-        options={['', 'Happy', 'Sad', 'Funny', 'Boring', 'Awesome']}
+}) => {
+  const fields: IFields = {
+    title: {
+      id: 'title',
+      label: 'Title',
+    },
+    place: {
+      id: 'place',
+      label: 'Place',
+    },
+    emotion: {
+      id: 'emotion',
+      label: 'Emotion',
+      editor: 'dropdown',
+      options: ['', 'Happy', 'Sad', 'Funny', 'Boring', 'Awesome'],
+    },
+    description: {
+      id: 'description',
+      label: 'Description',
+      editor: 'multilinetextbox',
+    },
+    submit: {
+      id: 'submit',
+      editor: 'submit',
+      value: 'Submit',
+    },
+  };
+  return (
+    <Container>
+      <Title>Input Memory</Title>
+      <Form
+        action="/memory"
+        fields={fields}
+        render={() => (
+          <>
+            <Field {...fields.title} />
+            <Field {...fields.place} />
+            <Field {...fields.emotion} />
+            <Field {...fields.description} />
+            <Field {...fields.submit} />
+          </>
+        )}
       />
-      <Field id="description" label="Description" editor="multilinetextbox" />
-      <Field id="submit" editor="submit" value="Submit" />
-      {submitSuccess && <div>The form was successfully submitted!</div>}
-      {submitSuccess === false && error && <div>Sorry, submitted fail</div>}
-    </Form>
-  </Container>
-);
+    </Container>
+  );
+};
 
 export default InputPresenter;

@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  
-`;
+const Container = styled.div``;
 
 const Image = styled.div``;
 
@@ -19,16 +17,27 @@ const Title = styled.span`
 
 const Description = styled.span``;
 
-interface IProps {
+export interface ICardProps {
+  /* The unique card name */
   id: string;
-  imageUrl: string;
+
+  /* The title for the card */
   title: string;
-  description: string;
-  place: string;
-  emotion: string;
+
+  /* The image url for the card */
+  imageUrl?: string;
+
+  /* The description for the card */
+  description?: string;
+
+  /* The place for the card */
+  place?: string;
+
+  /* The emotion for the card */
+  emotion?: string;
 }
 
-const Card: React.FunctionComponent<IProps> = ({
+const Card: React.FunctionComponent<ICardProps> = ({
   id,
   imageUrl,
   title,

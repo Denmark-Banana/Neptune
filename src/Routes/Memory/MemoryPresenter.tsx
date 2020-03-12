@@ -12,10 +12,10 @@ interface Iprops {
   loading: boolean;
 }
 
-const DetailPresenter: React.FunctionComponent<Iprops> = ({ error, loading }) => (
+const MemoryPresenter: React.FunctionComponent<Iprops> = ({ error, loading }) => (
   <Container>
     <Title>Detail</Title>
   </Container>
 );
 
-export default DetailPresenter;
+export default MemoryPresenter;
