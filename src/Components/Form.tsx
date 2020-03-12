@@ -10,13 +10,54 @@ const SForm = styled.form`
   margin-bottom: 12px;
 `;
 
+export interface IFormContext extends IFormState {
+  /* Function that allows values in the value state to be set */
+  setValues: (values: IValues) => void;
+}
+/*
+ * The context which allows state and functions to be shared with Field.
+ * Note that we need to pass createContext a default value which is why undefined is unioned in the type
+ */
+export const FormContext = React.createContext<IFormContext | undefined>(
+  undefined,
+);
+
+/**
+ * Validates wheter a field has a value
+ * @param {IValues} values - All the field values in the form
+ * @param {string} fieldName - The field to validate
+ * @returns {string} - The error message
+ */
+export const required = (values: IValues, fieldName: string): string =>
+  values[fieldName] === undefined ||
+  values[fieldName] === null ||
+  values[fieldName] === ''
+    ? 'This must be populated'
+    : '';
+
+/**
+ * Validates whether a field is a valid title
+ * @param {IValues} values - All the field values in the form
+ * @param {string} fieldName - The field to validate
+ * @param {number} length - The maximum number of characters
+ * @returns {string} - The error message
+ */
+export const maxLength = (
+  values: IValues,
+  fieldName: string,
+  length: number,
+): string =>
+  values[fieldName] && values[fieldName].length > length
+    ? `This can not exceed ${length} characters`
+    : '';
+
 export interface IFields {
   [key: string]: IFieldProps;
 }
 interface IFormProps {
   /* The http path that the form will be posted to */
   action: string;
-  
+
   /* The props for all the fields on the form */
   fields: IFields;
 
@@ -45,19 +86,6 @@ export interface IFormState {
   submitSuccess?: boolean;
 }
 
-export interface IFormContext extends IFormState {
-  /* Function that allows values in the value state to be set */
-  setValues: (values: IValues) => void;
-}
-
-/*
- * The context which allows state and functions to be shared with Field.
- * Note that we need to pass createContext a default value which is why undefined is unioned in the type
- */
-export const FormContext = React.createContext<IFormContext | undefined>(
-  undefined,
-);
-
 export class Form extends Component<IFormProps, IFormState> {
   constructor(props: IFormProps) {
     super(props);
@@ -75,6 +103,16 @@ export class Form extends Component<IFormProps, IFormState> {
    */
   setValues = (values: IValues) => {
     this.setState({ values: { ...this.state.values, ...values } });
+  };
+
+  /**
+   * Executes the validation rule for the field and updates the form erros
+   * @param {string} fieldName - The field to validate
+   * @returns {string} - The error message
+   */
+  private validate = (fieldName: string): string => {
+    let newError: string = '';
+    return newError;
   };
 
   /**

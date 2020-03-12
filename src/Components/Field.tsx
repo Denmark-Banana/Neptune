@@ -1,5 +1,5 @@
 import React from 'react';
-import { IErrors, IFormContext, FormContext } from './Form';
+import { IErrors, IValues, IFormContext, FormContext } from './Form';
 import styled from 'styled-components';
 
 type Editor = 'textbox' | 'multilinetextbox' | 'dropdown' | 'submit';
@@ -14,6 +14,10 @@ const TextArea = styled.textarea``;
 const Select = styled.select``;
 const Option = styled.option``;
 
+export interface IValidation {
+  rule: (values: IValues, fieldName: string, args: any) => string;
+  args?: any;
+}
 export interface IFieldProps {
   /* The unique field name */
   id: string;
@@ -29,6 +33,9 @@ export interface IFieldProps {
 
   /* The field value */
   value?: any;
+
+  /* The field validator function and argument */
+  validation?: IValidation;
 }
 
 export const Field: React.FunctionComponent<IFieldProps> = ({
