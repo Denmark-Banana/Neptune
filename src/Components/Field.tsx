@@ -4,7 +4,9 @@ import styled from 'styled-components';
 
 type Editor = 'textbox' | 'multilinetextbox' | 'dropdown' | 'submit';
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-bottom: 25px;
+`;
 const Label = styled.label`
   display: block;
   margin-bottom: 10px;
@@ -44,66 +46,84 @@ export const Field: React.FunctionComponent<IFieldProps> = ({
   editor,
   options,
   value,
-}) => (
-  <FormContext.Consumer>
-    {(context: IFormContext | undefined) => (
-      <Container>
-        {label && <Label htmlFor={id}>Enter {label}</Label>}
-        {editor!.toLowerCase() === 'textbox' && (
-          <Input
-            id={id}
-            type="text"
-            value={value}
-            onChange={(e: React.FormEvent<HTMLInputElement>) => 
-              context?.setValues({ [id]: e.currentTarget.value })
-            }
-            onBlur={(e: React.FormEvent<HTMLInputElement>) => console.log(e)}
-            /* TODO : validate field value */
-          />
-        )}
-        {editor!.toLowerCase() === 'multilinetextbox' && (
-          <TextArea
-            id={id}
-            value={value}
-            onChange={(e: React.FormEvent<HTMLTextAreaElement>) =>
-              context?.setValues({ [id]: e.currentTarget.value })
-            }
-            onBlur={(e: React.FormEvent<HTMLTextAreaElement>) => console.log(e)}
-          />
-        )}
-        {editor!.toLowerCase() === 'dropdown' && (
-          <Select
-            id={id}
-            name={id}
-            value={value}
-            onChange={(e: React.FormEvent<HTMLSelectElement>) =>
-              context?.setValues({ [id]: e.currentTarget.value })
-            }
-            onBlur={(e: React.FormEvent<HTMLSelectElement>) => console.log(e)}
-          >
-            {options &&
-              options.map(option => (
-                <Option key={option} value={option}>
-                  {option}
-                </Option>
-              ))}
-          </Select>
-        )}
-        {editor!.toLowerCase() === 'submit' && (
-          <Input
-            id={id}
-            type="submit"
-            value={value}
-            onChange={(e: React.FormEvent<HTMLInputElement>) => console.log(e)}
-            onBlur={(e: React.FormEvent<HTMLInputElement>) => console.log(e)}
-          />
-        )}
+}) => {
+  /**
+   * Gets the inline styles for editor
+   * @param {IErrors} errors - All the errors from the form
+   * @returns {any} - The style object
+   */
+  const getEditorStyle = (errors: IErrors | undefined): any =>
+    getError(errors) ? {  border: '1px solid red' } : {};
 
-        {/* TODO - display validation error */}
-      </Container>
-    )}
-  </FormContext.Consumer>
-);
+  /**
+   * Gets the validation error for the filed
+   * @param {IErrors} errors - All the errors form the form
+   * @returns {string} - The validation error
+   */
+  const getError = (errors: IErrors | undefined): string =>
+    errors ? errors[id] : '';
+
+  return (
+    <FormContext.Consumer>
+      {(context: IFormContext | undefined) => (
+        <Container>
+          {label && <Label htmlFor={id}>Enter {label}</Label>}
+          {editor!.toLowerCase() === 'textbox' && (
+            <Input
+              id={id}
+              type="text"
+              value={value}
+              style={getEditorStyle(context?.errors)}
+              onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                context?.setValues({ [id]: e.currentTarget.value })
+              }
+              onBlur={() => context?.validate(id)}
+            />
+          )}
+          {editor!.toLowerCase() === 'multilinetextbox' && (
+            <TextArea
+              id={id}
+              value={value}
+              style={getEditorStyle(context?.errors)}
+              onChange={(e: React.FormEvent<HTMLTextAreaElement>) =>
+                context?.setValues({ [id]: e.currentTarget.value })
+              }
+              onBlur={() => context?.validate(id)}
+            />
+          )}
+          {editor!.toLowerCase() === 'dropdown' && (
+            <Select
+              id={id}
+              name={id}
+              value={value}
+              style={getEditorStyle(context?.errors)}
+              onChange={(e: React.FormEvent<HTMLSelectElement>) =>
+                context?.setValues({ [id]: e.currentTarget.value })
+              }
+              onBlur={() => context?.validate(id)}
+            >
+              {options &&
+                options.map(option => (
+                  <Option key={option} value={option}>
+                    {option}
+                  </Option>
+                ))}
+            </Select>
+          )}
+          {editor!.toLowerCase() === 'submit' && (
+            <Input id={id} type="submit" value={value} />
+          )}
+
+          {getError(context?.errors) && (
+            <div style={{ color: 'red', fontSize: '80%' }}>
+              <p>{getError(context?.errors)}</p>
+            </div>
+          )}
+        </Container>
+      )}
+    </FormContext.Consumer>
+  );
+};
 
 Field.defaultProps = {
   editor: 'textbox',

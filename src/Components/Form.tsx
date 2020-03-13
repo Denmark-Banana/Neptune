@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { IFieldProps } from './Field';
+import axios from 'axios';
 
 const Container = styled.div``;
 const SForm = styled.form`
@@ -13,6 +14,9 @@ const SForm = styled.form`
 export interface IFormContext extends IFormState {
   /* Function that allows values in the value state to be set */
   setValues: (values: IValues) => void;
+
+  /* Function that validates a field */
+  validate: (fieldName: string) => void;
 }
 /*
  * The context which allows state and functions to be shared with Field.
@@ -112,6 +116,19 @@ export class Form extends Component<IFormProps, IFormState> {
    */
   private validate = (fieldName: string): string => {
     let newError: string = '';
+
+    if(this.props.fields[fieldName] && this.props.fields[fieldName].validation) {
+      newError = this.props.fields[fieldName].validation!.rule(
+        this.state.values,
+        fieldName,
+        this.props.fields[fieldName].validation!.args
+      )
+    }
+    this.state.errors[fieldName] = newError;
+    this.setState({
+      errors: { ...this.state.errors, [fieldName]: newError }
+    });
+
     return newError;
   };
 
@@ -135,9 +152,7 @@ export class Form extends Component<IFormProps, IFormState> {
    */
   handleSubmit = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
-
-    console.log(this.state.values);
-
+    
     if (this.validateForm()) {
       const submitSuccess: boolean = await this.submitForm();
       this.setState({ submitSuccess });
@@ -149,8 +164,12 @@ export class Form extends Component<IFormProps, IFormState> {
    * @returns {boolean} - form validation check 성공 여부
    */
   validateForm(): boolean {
-    // TODO - validate form
-    return true;
+    const errors: IErrors = {};
+    Object.keys(this.props.fields).map((fieldName: string) => {
+      errors[fieldName] = this.validate(fieldName);
+    });
+    this.setState({ errors });
+    return !this.haveErrors(errors);
   }
 
   /**
@@ -158,10 +177,24 @@ export class Form extends Component<IFormProps, IFormState> {
    * @returns {boolean} - form submission 성공 여부
    */
   async submitForm(): Promise<boolean> {
-    // TODO - submit the form
-    const { values } = this.state;
-    console.log(values);
-    return true;
+    try{
+      const response = await axios(this.props.action, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        data: JSON.stringify(this.state.values)
+      });
+      //TODO: need to print Server Validation Message for field
+      if (response.status >= 400 ) return false;
+      else {
+        return true;
+      }
+    } catch(error){
+      console.error(error);
+      return false;
+    } 
   }
 
   render() {
@@ -169,6 +202,7 @@ export class Form extends Component<IFormProps, IFormState> {
     const context: IFormContext = {
       ...this.state,
       setValues: this.setValues,
+      validate: this.validate
     };
     return (
       <FormContext.Provider value={context}>

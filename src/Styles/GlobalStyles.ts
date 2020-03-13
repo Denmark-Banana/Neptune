@@ -21,7 +21,6 @@ const globalStyles = createGlobalStyle`
     input:not([type="file"]),
     textarea {
         padding: 7px 10px;
-        margin-bottom: 25px;
         width: 100%;
         border: none;
         border-radius: 5px;

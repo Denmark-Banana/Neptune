@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Form, IFields } from '../../Components/Form';
+import { Form, IFields, required, maxLength } from '../../Components/Form';
 import { Field } from '../../Components/Field';
 
 const Container = styled.div`
@@ -28,6 +28,7 @@ const InputPresenter: React.FunctionComponent<Iprops> = ({
     title: {
       id: 'title',
       label: 'Title',
+      validation: { rule: required }
     },
     place: {
       id: 'place',
@@ -38,11 +39,13 @@ const InputPresenter: React.FunctionComponent<Iprops> = ({
       label: 'Emotion',
       editor: 'dropdown',
       options: ['', 'Happy', 'Sad', 'Funny', 'Boring', 'Awesome'],
+      validation: { rule : required }
     },
     description: {
       id: 'description',
       label: 'Description',
       editor: 'multilinetextbox',
+      validation: { rule: maxLength, args: 50 }
     },
     submit: {
       id: 'submit',
